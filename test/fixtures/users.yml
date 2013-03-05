@@ -3,3 +3,9 @@ maytee:
   last_name: "Kneitz"
   email: "maytee.kneitz@gmail.com"
   profile_name: "mayteekneitz"
+
+john:
+  first_name: "John"
+  last_name: "Doe"
+  email: "abc123@me.com"
+  profile_name: "johndoe"

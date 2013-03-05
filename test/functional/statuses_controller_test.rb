@@ -9,16 +9,32 @@ class StatusesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:statuses)
-  end
+  end    
 
-  test "should get new" do
+  test "should be redirected when user isn't logeed in" do
     get :new
-    assert_response :success
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
   end
 
-  test "should create status" do
+  test "should render a new page when the user is logged in" do
+     sign_in users(:maytee)
+     get :new
+     assert_response :success
+  end
+
+ test "should be logged in to be able to post a status" do
+   post :create, status: { content: "hello"}
+   assert_response :redirect
+   assert_redirected_to new_user_session_path
+ end
+
+
+  test "should create status when logged in" do
+    sign_in users(:maytee)
+    
     assert_difference('Status.count') do
-      post :create, status: { content: @status.content, name: @status.name }
+      post :create, status: { content: @status.content }
     end
 
     assert_redirected_to status_path(assigns(:status))
@@ -29,16 +45,24 @@ class StatusesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get edit" do
+  test "should get edit when logged in" do
+    sign_in users(:maytee)
     get :edit, id: @status
     assert_response :success
   end
 
-  test "should update status" do
-    put :update, id: @status, status: { content: @status.content, name: @status.name }
+  test "should update status when logged in" do
+    sign_in users(:maytee)
+    put :update, id: @status, status: { content: @status.content}
     assert_redirected_to status_path(assigns(:status))
   end
 
+  test "should redirect status update when not  logged in" do
+    put :update, id: @status, status: { content: @status.content }
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
+  end
+    
   test "should destroy status" do
     assert_difference('Status.count', -1) do
       delete :destroy, id: @status
