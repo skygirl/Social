@@ -29,7 +29,6 @@ class StatusesControllerTest < ActionController::TestCase
    assert_redirected_to new_user_session_path
  end
 
-
   test "should create status when logged in" do
     sign_in users(:maytee)
     
@@ -57,6 +56,21 @@ class StatusesControllerTest < ActionController::TestCase
     assert_redirected_to status_path(assigns(:status))
   end
 
+test "should update status for the current user when logged in" do
+    sign_in users(:maytee)
+    put :update, id: @status, status: { content: @status.content, user_id: users(:john).id}
+    assert_redirected_to status_path(assigns(:status))
+    assert_equal assigns(:status).user_id, users(:maytee).id
+  end
+  
+
+  test "should not update status for the current if nothing's changed" do
+    sign_in users(:maytee)
+    put :update, id: @status
+    assert_redirected_to status_path(assigns(:status))
+    assert_equal assigns(:status).user_id, users(:maytee).id
+  end
+  
   test "should redirect status update when not  logged in" do
     put :update, id: @status, status: { content: @status.content }
     assert_response :redirect

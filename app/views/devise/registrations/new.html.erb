@@ -13,13 +13,15 @@
   
   <div><%= f.input :email %><br />
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+  <div><%= f.input :password %><br />
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <div><%= f.input :password_confirmation %><br />
 
   <div><%= f.button :submit, "Sign up" %></div>
+
+  <h5>Don't have a gravatar account? Sign up for one:</h5>
+  <a href="url">www.gravatar.com</a>
+
 </fieldset>
 <% end %>
 
